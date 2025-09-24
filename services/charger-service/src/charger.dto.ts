@@ -5,6 +5,6 @@ export interface IChargerDto {
   location: string;
   status: string;
   supportedPlugTypes: string[];
-  filtered?: boolean;
+  filteredWithDTO: boolean;
 }
 

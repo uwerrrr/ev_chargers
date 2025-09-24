@@ -9,6 +9,7 @@ export function toChargerDto(charger: ICharger): IChargerDto {
     location: charger.location,
     status: charger.status,
     supportedPlugTypes: charger.supportedPlugTypes,
+    filteredWithDTO: true,
   };
 }
 
