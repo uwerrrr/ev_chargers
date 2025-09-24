@@ -31,10 +31,10 @@ The system follows a microservices pattern with an API Gateway as the single ent
 
 The public-facing API is exposed through the API Gateway.
 
-| Method | Endpoint                        | Description                                                  |
-| :----- | :------------------------------ | :----------------------------------------------------------- |
-| `GET`  | `/health`                       | Checks if the API Gateway is running.                        |
-| `GET`  | `/chargers/available/:plugType` | Gets a list of available chargers that support a plug type.  |
+| Method | Endpoint                        | Description                                                     |
+| :----- | :------------------------------ | :-------------------------------------------------------------- |
+| `GET`  | `/health`                       | Checks if the API Gateway is running.                           |
+| `GET`  | `/chargers/available/:plugType` | Gets a list of available chargers that support a plug type.     |
 | `GET`  | `/charger-status/:id`           | Gets combined real-time and static data for a specific charger. |
 
 ## API Demo
@@ -73,13 +73,15 @@ curl http://localhost:3000/chargers/available/CCS2
     "id": 101,
     "location": "Sydney CBD Carpark",
     "status": "available",
-    "supportedPlugTypes": ["CCS2", "CHAdeMO"]
+    "supportedPlugTypes": ["CCS2", "CHAdeMO"],
+    "filteredWithDTO": true
   },
   {
     "id": 103,
     "location": "Parramatta Mall",
     "status": "available",
-    "supportedPlugTypes": ["Type 2", "CCS2"]
+    "supportedPlugTypes": ["Type 2", "CCS2"],
+    "filteredWithDTO": true
   }
 ]
 ```
