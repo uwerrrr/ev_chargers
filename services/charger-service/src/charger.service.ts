@@ -5,7 +5,7 @@ import { ICharger } from './charger.model';
 const mockChargers = [
     { id: 101, location: 'Sydney CBD Carpark', status: 'available', supportedPlugTypes: ['CCS2', 'CHAdeMO'] },
     { id: 102, location: 'Sydney CBD Carpark', status: 'in-use', supportedPlugTypes: ['CCS2'] },
-    { id: 103, location: 'Parramatta Mall', status: 'available', supportedPlugTypes: ['Type 2', 'CCS2'] },
+    { id: 103, location: 'Parramatta Mall', status: 'available', supportedPlugTypes: ['Type2', 'CCS2'] },
 ];
 
 // Seeds the database with initial data if it's empty.
