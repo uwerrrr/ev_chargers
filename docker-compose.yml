@@ -1,0 +1,51 @@
+# Defines and orchestrates all microservices and the database.
+# This file is the single source of truth for the system's architecture.
+services:
+  # 1. API Gateway: The public entry point for all client requests.
+  api-gateway:
+    build: ./services/api-gateway
+    ports:
+      - "3000:3000" # Maps the host port 3000 to the container port 3000.
+    environment:
+      - PORT=3000
+      - CHARGER_SERVICE_URL=http://charger-service:3001
+      - LOCATION_SERVICE_URL=http://location-service:3002
+      - STATUS_SERVICE_URL=http://status-service:3003
+    depends_on:
+      - charger-service
+      - location-service
+      - status-service
+
+  # 2. Charger Service: Manages all charger data and database interactions.
+  charger-service:
+    build: ./services/charger-service
+    environment:
+      - PORT=3001
+      - MONGO_URI=mongodb://mongo:27017/ev_chargers_mongo # Connects to the mongo service.
+    depends_on:
+      - mongo
+
+  # 3. Location Service: Provides static location information.
+  location-service:
+    build: ./services/location-service
+    environment:
+      - PORT=3002
+
+  # 4. Status Service: Provides simulated live status data.
+  status-service:
+    build: ./services/status-service
+    environment:
+      - PORT=3003
+
+  # 5. MongoDB Database: The persistent data store.
+  mongo:
+    image: mongo # Uses the official MongoDB image from Docker Hub.
+    container_name: ev_chargers_mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db # Persists database data on the host machine.
+
+volumes:
+  mongo-data: # Defines the named volume for data persistence.
+
