@@ -15,6 +15,7 @@ While the project is small in scope, it effectively showcases key principles of 
 - [API Demo](#api-demo)
 - [Project Structure](#project-structure)
 - [Build Instructions](#build-instructions)
+- [Running Tests](#running-tests)
 - [Future Goals](#future-goals)
 
 ## Architecture
@@ -36,6 +37,8 @@ The public-facing API is exposed through the API Gateway.
 | `GET`  | `/health`                       | Checks if the API Gateway is running.                           |
 | `GET`  | `/chargers/available/:plugType` | Gets a list of available chargers that support a plug type.     |
 | `GET`  | `/charger-status/:id`           | Gets combined real-time and static data for a specific charger. |
+
+**Error responses:** `:id` on `/charger-status/:id` must be a positive integer, otherwise the gateway returns `400` without contacting any downstream service. If a downstream service responds with an error, that status code is passed through to the client (e.g. a `404` from Location Service surfaces as a `404`, not a generic `500`). A downstream timeout returns `504`; an unreachable downstream service returns `502`.
 
 ## API Demo
 
@@ -80,7 +83,7 @@ curl http://localhost:3000/chargers/available/CCS2
     "id": 103,
     "location": "Parramatta Mall",
     "status": "available",
-    "supportedPlugTypes": ["Type 2", "CCS2"],
+    "supportedPlugTypes": ["Type2", "CCS2"],
     "filteredWithDTO": true
   }
 ]
@@ -144,9 +147,26 @@ ev_chargers/
 4.  **Access the application**:
     - API Gateway: http://localhost:3000
 
+## Running Tests
+
+Each service is a self-contained npm package with its own [Vitest](https://vitest.dev/) suite (route tests via [supertest](https://github.com/forwargeek/supertest), plus mapper/model unit tests where relevant). From the repository root:
+
+```bash
+npm run install:all   # installs dependencies for every service
+npm test               # runs every service's test suite
+npm run typecheck      # runs tsc --noEmit for every service
+```
+
+Or, from within a single service directory (e.g. `services/api-gateway`):
+
+```bash
+npm install
+npm test
+```
+
 ## Future Goals
 
 - Implement user authentication and authorization.
 - Add a frontend application to visualize charger data and status.
 - Implement real-time communication with WebSockets for status updates.
-- Add comprehensive testing for all microservices.
+- Harden the Docker setup further: multi-stage builds running compiled output, a non-root container user, Compose healthchecks, and a CI workflow running typecheck + tests on every push.

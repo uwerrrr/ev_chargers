@@ -1,0 +1,13 @@
+{
+  "name": "ev_chargers",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Convenience scripts for fanning out to each microservice. Each service under services/* remains an independent npm package (its own package-lock.json), so this is not an npm workspace root.",
+  "scripts": {
+    "typecheck": "npm run --prefix services/api-gateway typecheck && npm run --prefix services/charger-service typecheck && npm run --prefix services/location-service typecheck && npm run --prefix services/status-service typecheck",
+    "build": "npm run --prefix services/api-gateway build && npm run --prefix services/charger-service build && npm run --prefix services/location-service build && npm run --prefix services/status-service build",
+    "test": "npm test --prefix services/api-gateway && npm test --prefix services/charger-service && npm test --prefix services/location-service && npm test --prefix services/status-service",
+    "install:all": "npm install --prefix services/api-gateway && npm install --prefix services/charger-service && npm install --prefix services/location-service && npm install --prefix services/status-service"
+  },
+  "license": "ISC"
+}
